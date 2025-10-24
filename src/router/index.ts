@@ -1,3 +1,4 @@
+import { useSessionIsActiveChecking } from '@/composables/useCheckSessionStatus'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import NewsView from '@/views/NewsView.vue'
@@ -11,7 +12,16 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes
 })
+
+const { checkSessionStatus } = useSessionIsActiveChecking();
+
+router.beforeEach((to, _, next) => {
+  if (to.name !== "login" && checkSessionStatus() === "unauthorized") {
+    next("/login");
+  }
+  next();
+});
 
 export default router;

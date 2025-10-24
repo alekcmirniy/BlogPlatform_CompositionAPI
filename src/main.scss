@@ -1,0 +1,61 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+main,
+div,
+span,
+a,
+footer,
+header,
+dd,
+dt,
+dl,
+ol,
+ul,
+li,
+table,
+article,
+aside,
+span,
+form,
+th,
+tr,
+td,
+caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+}
+
+body {
+    background: #a5c5d1;
+}
+
+.default-button {
+    display: flex;
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(230, 220, 220);
+    background-color: rgb(54, 133, 202);
+    border-radius: 14px;
+    padding: 12px 20px;
+    font-size: 24px;
+
+    &:disabled {
+        background-color: #96a1a5;
+        cursor: not-allowed;
+    }
+
+    transition: all 0.2s ease;
+}
