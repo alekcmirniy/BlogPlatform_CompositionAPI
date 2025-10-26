@@ -5,7 +5,7 @@ const defaultErrorValues: Error = {
     message: ''
 }
 
-export const useShowErrors = () => {
+export const useHandleErrors = () => {
     let errorQueue = reactive<Error[]>([]);
     let currentError = reactive({ ...defaultErrorValues });
 
