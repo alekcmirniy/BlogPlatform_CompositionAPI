@@ -5,7 +5,7 @@ const defaultErrorValues: Error = {
     message: ''
 }
 
-export const useHandleErrors = () => {
+export const useHandleError = () => {
     let errorQueue = reactive<Error[]>([]);
     let currentError = reactive({ ...defaultErrorValues });
 
@@ -17,6 +17,10 @@ export const useHandleErrors = () => {
         return errorQueue.length > 0 ? errorQueue.pop()! : { ...defaultErrorValues };
     }
 
+    const closeError = () => {
+        currentError = { ...defaultErrorValues };
+    }
+
     watch(errorQueue, (newValue) => {
         if (newValue.length > 0) {
             const error = getLastErrorInQueue();
@@ -25,5 +29,5 @@ export const useHandleErrors = () => {
         }
     }, { deep: true });
 
-    return { handleError: pushErrorInQueue, currentError };
+    return { currentError, handleError: pushErrorInQueue, closeError: closeError };
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import ErrorWindow from './components/ErrorWindow.vue';
   import NavigationComponent from './components/NavigationComponent.vue';
 </script>
 
@@ -9,6 +10,9 @@
   <main>
     <RouterView />
   </main>
+  <aside>
+    <ErrorWindow />
+  </aside>
 </template>
 
 <style scoped>
