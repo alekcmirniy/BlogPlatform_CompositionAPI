@@ -15,13 +15,14 @@ const router = createRouter({
   routes
 })
 
-const { checkSessionStatus } = useSessionIsActiveChecking();
+const { checkSessionStatusFn } = useSessionIsActiveChecking();
 
 router.beforeEach((to, _, next) => {
-  if (to.name !== "login" && checkSessionStatus() === "unauthorized") {
+  if (to.name !== "login" && checkSessionStatusFn() === "unauthorized") {
     next("/login");
   }
-  next();
+  else
+    next();
 });
 
 export default router;

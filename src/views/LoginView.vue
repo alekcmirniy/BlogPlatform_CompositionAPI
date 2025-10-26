@@ -10,9 +10,15 @@ import { computed, reactive, ref, watch, type Ref } from 'vue';
         token: ""
     })
 
+    const { hashStringFn } = useHashString(isPswFilled.value.toString());
+
     watch(isPswFilled, ((newValue, oldValue) => {
-        formData.encryptedPsw = newValue.toString();
+        handle();
     }))
+
+    const handle = async () => {
+        return await hashStringFn();
+    }
 
     const handlePasswordFieldChanges = (event: Event) => {
         isPswFilled.value = ((event.target as HTMLInputElement).value) ? true : false;
@@ -69,6 +75,7 @@ import { computed, reactive, ref, watch, type Ref } from 'vue';
         height: 40px;
         padding: 0 10px;
         font-size: 1.5em;
+        box-shadow: 4px 4px 10px rgb(34, 30, 30);
     }
     
 }
