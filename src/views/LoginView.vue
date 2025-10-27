@@ -1,3 +1,14 @@
+<template>
+    <div class="container">
+        <form class="form-wrapper">
+            <input v-model="formData.login" type="text" placeholder="Enter login..." required/>
+            <input v-model="formData.password" type="password" placeholder="Enter password..." required/>
+            <input v-model="formData.token" type="text" placeholder="Enter token..." required/>
+            <button @click="handleRegister" :disabled="isRegisterDisabled" type="submit" class="default-button">Register</button>
+        </form>
+    </div>
+</template>
+
 <script setup lang="ts">
     import { computed, reactive } from 'vue';
 
@@ -23,17 +34,6 @@
         }
     }
 </script>
-
-<template>
-    <div class="container">
-        <form class="form-wrapper">
-            <input v-model="formData.login" type="text" placeholder="Enter login..." required/>
-            <input v-model="formData.password" type="password" placeholder="Enter password..." required/>
-            <input v-model="formData.token" type="text" placeholder="Enter token..." required/>
-            <button @click="handleRegister" :disabled="isRegisterDisabled" type="submit" class="default-button">Register</button>
-        </form>
-    </div>
-</template>
 
 <style lang="scss" scoped>
 .container {

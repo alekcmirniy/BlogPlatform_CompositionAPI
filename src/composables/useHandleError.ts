@@ -5,8 +5,8 @@ const DEFAULT_ERROR_VALUES = {
     message: ''
 } as Error;
 
-let errorQueue = reactive<Error[]>([]);
-let currentError = reactive<Error>(DEFAULT_ERROR_VALUES);
+const errorQueue = reactive<Error[]>([]);
+const currentError = reactive<Error>(DEFAULT_ERROR_VALUES);
 
 export const useHandleError = () => {
 
@@ -23,13 +23,13 @@ export const useHandleError = () => {
         currentError.name = '';
     }
 
-    watch(errorQueue, (newValue) => {
-        if (newValue.length > 0) {
+    watch(() => errorQueue.length, (newValue) => {
+        if (newValue > 0) {
             const error = getErrorFromQueue();
             currentError.name = error.name;
             currentError.message = error.message;
         }
     }, { deep: true });
 
-    return { currentError, handleError: pushErrorInQueue, closeError: closeError };
+    return { currentError, handleError: pushErrorInQueue, closeError };
 }

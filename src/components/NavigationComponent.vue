@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import { reactive } from 'vue';
-import '@/main.scss';
-    const links = reactive([ { path: "/", name: "home" }, { path: "/news", name: "news" } ]);
-
-
-</script>
-
 <template>
     <ul class="container">
         <li v-for="link in links" :key="link.name">
@@ -13,6 +5,12 @@ import '@/main.scss';
         </li>
     </ul>
 </template>
+
+<script setup lang="ts">
+import { reactive } from 'vue';
+import '@/main.scss';
+    const links = reactive([ { path: "/", name: "home" }, { path: "/news", name: "news" } ]);
+</script>
 
 <style lang="scss" scoped>
 .container {
