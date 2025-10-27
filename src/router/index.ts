@@ -1,4 +1,3 @@
-import { useSessionIsActiveChecking } from '@/composables/useCheckSessionStatus'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import NewsView from '@/views/NewsView.vue'
@@ -15,10 +14,10 @@ const router = createRouter({
   routes
 })
 
-const { checkSessionStatusFn } = useSessionIsActiveChecking();
+const isUserAuthorized = () => (Boolean(localStorage.getItem("isAuthorized")) ?? false);
 
 router.beforeEach((to, _, next) => {
-  if (to.name !== "login" && checkSessionStatusFn() === "unauthorized") {
+  if (to.name !== "login" && !isUserAuthorized()) {
     next("/login");
   }
   else

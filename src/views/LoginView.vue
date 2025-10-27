@@ -1,43 +1,22 @@
 <script setup lang="ts">
-import { useHashString } from '@/composables/useHashString';
-import { computed, reactive, ref, watch, type Ref } from 'vue';
+    import { computed, reactive } from 'vue';
 
-    const isPswFilled: Ref<boolean> = ref(false);
-    
     const formData = reactive({
         login: "",
-        encryptedPsw: "",
+        password: "",
         token: ""
     })
 
-    const { hashStringFn } = useHashString(isPswFilled.value.toString());
-
-    watch(isPswFilled, ((newValue, oldValue) => {
-        handle();
-    }))
-
-    const handle = async () => {
-        return await hashStringFn();
-    }
-
-    const handlePasswordFieldChanges = (event: Event) => {
-        isPswFilled.value = ((event.target as HTMLInputElement).value) ? true : false;
-        return;
-    }
-
     const isRegisterDisabled = computed(() => {
         const fd = formData;
-        return !(fd.login.length >= 5 && fd.encryptedPsw.length && fd.token.length >= 3) || false;
+        return (fd.login.length < 5 || fd.password.length < 8 || fd.token.length < 3);
     })
 
     const handleRegister = (event: MouseEvent) => {
         event.preventDefault();
         try {
-            if (!formData.token.length) throw new Error ("Token field is empty");
-            localStorage.setItem("token", formData.token);
-        }
-        catch (e: any) {
-            console.error(e.message);
+            if (formData.token.length) throw new SyntaxError('Техническая ошибка');
+            localStorage.setItem("isAuthorized", "true");
         }
         finally {
             console.log("Register process finished.");
@@ -49,7 +28,7 @@ import { computed, reactive, ref, watch, type Ref } from 'vue';
     <div class="container">
         <form class="form-wrapper">
             <input v-model="formData.login" type="text" placeholder="Enter login..." required/>
-            <input @change="handlePasswordFieldChanges" type="password" placeholder="Enter password..." required/>
+            <input v-model="formData.password" type="password" placeholder="Enter password..." required/>
             <input v-model="formData.token" type="text" placeholder="Enter token..." required/>
             <button @click="handleRegister" :disabled="isRegisterDisabled" type="submit" class="default-button">Register</button>
         </form>

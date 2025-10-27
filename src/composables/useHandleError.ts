@@ -1,29 +1,31 @@
 import { reactive, watch } from "vue";
 
-const defaultErrorValues: Error = {
+const DEFAULT_ERROR_VALUES = {
     name: '',
     message: ''
-}
+} as Error;
+
+let errorQueue = reactive<Error[]>([]);
+let currentError = reactive<Error>(DEFAULT_ERROR_VALUES);
 
 export const useHandleError = () => {
-    let errorQueue = reactive<Error[]>([]);
-    let currentError = reactive({ ...defaultErrorValues });
 
     const pushErrorInQueue = (error: Error) => {
-        errorQueue.unshift(error);
+        errorQueue.push(error);
     }
 
-    const getLastErrorInQueue = () => {
-        return errorQueue.length > 0 ? errorQueue.pop()! : { ...defaultErrorValues };
+    const getErrorFromQueue = () => {
+        return errorQueue.length > 0 ? errorQueue.shift()! : structuredClone(DEFAULT_ERROR_VALUES);
     }
 
     const closeError = () => {
-        currentError = { ...defaultErrorValues };
+        currentError.message = '';
+        currentError.name = '';
     }
 
     watch(errorQueue, (newValue) => {
         if (newValue.length > 0) {
-            const error = getLastErrorInQueue();
+            const error = getErrorFromQueue();
             currentError.name = error.name;
             currentError.message = error.message;
         }
