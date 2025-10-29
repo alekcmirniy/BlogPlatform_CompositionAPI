@@ -1,38 +1,38 @@
-import axios, { AxiosError } from "axios";
-import { useHandleError } from "./useHandleError";
-import { ref } from "vue";
-import type { RequestType } from "@/utils/types";
-import type { ApiResponse } from "@/utils/interfaces";
+import { ref, watch } from "vue";
 
-const { handleError } = useHandleError();
+const TIME_CONTROL_PARAM = 15000;
+const timesMap = new Map<string, number>();
+const dataMap = new Map<string, any>();
 
-const isLoading = ref(false);
+export const useAxiosRequest = (cb: () => Promise<any>, keys: any) => {
+    const currentData = ref({});
 
-export const useAxiosRequest = (url: string, method: RequestType, data?: {}, params?: {}) => {
+    const refetch = async (newValue: any) => {
+        const now = new Date().getTime();
+        const isOld = dataMap.has(newValue) && timesMap.has(newValue) && (now - timesMap.get(newValue)! < TIME_CONTROL_PARAM);
 
-    const responseData = ref<ApiResponse | undefined>();
-
-    const doFetchData = async () => {
-        try {
-            isLoading.value = true;
-
-            const response = await axios.request<ApiResponse>({
-                method,
-                url,
-                data,
-                params
-            });
-            if (response.status === 200)
-                responseData.value = response.data;
-            else throw new AxiosError("Ошибка при выполнении запроса");
+        if (isOld) {
+            return dataMap.get(newValue);
         }
-        catch (error: any) {
-            handleError(error as Error);
-        }
-        finally {
-            isLoading.value = false;
+        else {
+            const response = await cb();
+            if (!response) return;
+
+            dataMap.set(newValue, response);
+            timesMap.set(newValue, now);
+            currentData.value = dataMap.get(newValue);
+
+            setTimeout(() => {
+                dataMap.delete(newValue);
+                timesMap.delete(newValue);
+                console.log('now you can');
+            }, TIME_CONTROL_PARAM);
         }
     }
 
-    return { responseData, doFetchData, isLoading };
+    watch(() => JSON.stringify(keys), async (newValue) => {
+        const data = await refetch(newValue);
+        currentData.value = data;
+    }, { immediate: true });
+    return { currentData }
 }

@@ -1,24 +1,39 @@
 <template>
-    <ul class="container">
-        <li v-for="link in links" :key="link.name">
-            <router-link :to='link.path' class="default-button" active-class="router-link-active" aria-current="page">Go to {{ link.name }}</router-link>
-        </li>
-    </ul>
+    <div class="background-layer">
+        <ul class="container">
+            <li v-for="link in links" :key="link.name">
+                <router-link :to='link.path' class="link" active-class="router-link-active" aria-current="page">{{
+                    link.name }}</router-link>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import '@/main.scss';
-    const links = reactive([ { path: "/", name: "home" }, { path: "/news", name: "news" } ]);
+import { ref } from 'vue';
+const links = ref([{ path: "/", name: "Главная" }, { path: "/posts", name: "Публикации" }, { path: '/about', name: 'О нас' }]);
 </script>
 
 <style lang="scss" scoped>
-.container {
-    position: fixed;
-    bottom: 0;
+$panel-height: 50px;
+
+.background-layer {
     width: 100%;
+    height: $panel-height;
+    margin-bottom: 25px;
+    background: #8585de;
+    background: radial-gradient(circle, rgba(133, 133, 222, 1) 0%, rgba(121, 168, 219, 1) 57%, rgba(180, 190, 207, 1) 100%);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.container {
+    margin: auto;
+    width: min(500px, 80%);
     display: flex;
     justify-content: space-around;
+    align-items: center;
     list-style-type: none;
+    height: 100%;
 }
 </style>

@@ -1,1 +1,1 @@
-export type RequestType = 'get' | 'post' | 'delete' | 'patch' | 'put';
+export type allowedPostFilters = 'new' | 'popular' | 'own';

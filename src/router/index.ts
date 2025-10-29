@@ -1,12 +1,14 @@
+import AboutView from '@/views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
-import NewsView from '@/views/NewsView.vue'
+import PostsView from '@/views/PostsView.vue'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", name: "home", component: HomeView },
-  { path: "/login", name: "login", component: LoginView },
-  { path: "/news", name: "news", component: NewsView }
+  { path: "/", name: "Главная", component: HomeView },
+  { path: "/login", name: "Вход", component: LoginView },
+  { path: "/posts", name: "Публикации", component: PostsView },
+  { path: "/about", name: "О нас", component: AboutView },
 ]
 
 const router = createRouter({

@@ -38,9 +38,7 @@ caption {
     font-size: 100%;
 }
 
-body {
-    background: #a5c5d1;
-}
+body {}
 
 @mixin default-button-props {
     border-radius: 10px;
@@ -50,6 +48,7 @@ body {
     box-shadow: 0 0 8px rgba(26, 21, 24, 0.5), 0 0 15px rgba(120, 200, 255, 0.4);
     border: none;
     transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
         transform: translateY(-2px);
@@ -66,6 +65,14 @@ body {
     }
 }
 
+.link {
+    @include default-button-props();
+    display: block;
+    padding: 10px;
+    width: 125px;
+    text-align: center;
+}
+
 .default-button {
     @include default-button-props();
     width: 150px;
@@ -79,4 +86,33 @@ body {
     top: 0;
     right: 0;
     padding: 0 4px;
+}
+
+.default-block-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 60px;
+    border-radius: 25px;
+    font-size: 24px;
+    font-weight: normal;
+    color: #fff;
+    background: linear-gradient(135deg, #6dcff6, #ff7bbf);
+    box-shadow: 0 0 8px rgba(26, 21, 24, 0.5), 0 0 15px rgba(120, 200, 255, 0.4);
+    border: none;
+    transition: all 0.3s ease;
+
+    &.filters {
+        cursor: pointer;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 12px rgba(219, 221, 231, 0.7), 0 0 20px rgba(130, 210, 255, 0.6);
+    }
+
+    &:active {
+        transform: scale(0.97);
+    }
 }
