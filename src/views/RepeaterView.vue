@@ -1,9 +1,9 @@
 <template>
-    <h1>О нас</h1>
     <p>Repeater demonstration(check console)</p>
     <button @click="startRepeater" class="default-button">Запуск</button>
     <button @click="pauseRepeater" class="default-button">Пауза</button>
     <button @click="stopRepeater" class="default-button">Стоп</button>
+    <button @click="immediateExecute" class="default-button">Принудительный вызов</button>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +26,11 @@ const pauseRepeater = () => {
 const stopRepeater = () => {
     if (RepeaterSingletone) {
         RepeaterSingletone.stop();
+    }
+}
+const immediateExecute = () => {
+    if (RepeaterSingletone) {
+        RepeaterSingletone.immediateExecute();
     }
 }
 

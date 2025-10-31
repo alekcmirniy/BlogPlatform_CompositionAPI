@@ -1,4 +1,4 @@
-import '@/main.scss';
+import '@/styles/main.scss';
 import { createApp } from 'vue'
 import { useHandleError } from './composables/useHandleError';
 import ErrorWindow from './components/ErrorWindow.vue';

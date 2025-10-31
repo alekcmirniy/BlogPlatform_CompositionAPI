@@ -11,10 +11,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-const links = ref([{ path: "/", name: "Главная" }, { path: "/posts", name: "Публикации" }, { path: '/about', name: 'О нас' }]);
+const links = ref([
+    { path: '/', name: "Главная" },
+    { path: "/posts", name: "Публикации" },
+    { path: '/repeater', name: 'Repeater' },
+    { path: '/directory', name: 'Directory' },
+]);
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/_mixins' as mixins;
 $panel-height: 50px;
 
 .background-layer {
@@ -29,11 +35,23 @@ $panel-height: 50px;
 
 .container {
     margin: auto;
-    width: min(500px, 80%);
+    width: min(1000px, 80%);
     display: flex;
     justify-content: space-around;
     align-items: center;
     list-style-type: none;
     height: 100%;
+}
+
+.link {
+    @include mixins.default-button-props();
+    display: block;
+    padding: 10px;
+    width: 125px;
+    text-align: center;
+}
+
+.router-link-active {
+    width: 300px;
 }
 </style>

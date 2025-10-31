@@ -1,3 +1,5 @@
+@use '../styles/mixins' as mixins;
+
 * {
     box-sizing: border-box;
 }
@@ -40,47 +42,14 @@ caption {
 
 body {}
 
-@mixin default-button-props {
-    border-radius: 10px;
-    font-size: 18px;
-    color: #fff;
-    background: linear-gradient(135deg, #ff7bbf, #6dcff6);
-    box-shadow: 0 0 8px rgba(26, 21, 24, 0.5), 0 0 15px rgba(120, 200, 255, 0.4);
-    border: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0 12px rgba(255, 180, 230, 0.7), 0 0 20px rgba(130, 210, 255, 0.6);
-    }
-
-    &:active {
-        transform: scale(0.97);
-    }
-
-    &:disabled {
-        cursor: not-allowed;
-        background-color: #96a1a5;
-    }
-}
-
-.link {
-    @include default-button-props();
-    display: block;
-    padding: 10px;
-    width: 125px;
-    text-align: center;
-}
-
 .default-button {
-    @include default-button-props();
+    @include mixins.default-button-props();
     width: 150px;
     padding: 8px 10px;
 }
 
 .default-close-button {
-    @include default-button-props();
+    @include mixins.default-button-props();
     width: fit-content;
     position: absolute;
     top: 0;
