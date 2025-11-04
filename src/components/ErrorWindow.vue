@@ -1,33 +1,39 @@
 <template>
     <aside v-if="isCurrentError" class="error-container">
-            <h3 class="error-header">⚠ Ошибка {{ currentError.name }}</h3>
-            <button @click="switchErrorMessageVisibility" type="button" class="default-button">{{ buttonMessage }}</button>
-            <div v-if="isErrorMessageVisible" class="error-message">
-                {{ currentError.message }}
-            </div>
-            <button @click="closeWindow" class="default-close-button" type="button">✕</button>
+        <h3 class="error-header">⚠ Ошибка {{ currentError.name }}</h3>
+        <button @click="switchErrorMessageVisibility" type="button" class="default-button">{{ buttonMessage }}</button>
+        <div v-if="isErrorMessageVisible" class="error-message">
+            {{ currentError.message }}
+        </div>
+        <button @click="handleCloseWindow" class="default-close-button" type="button">✕</button>
     </aside>
 </template>
 
 <script setup lang="ts">
-    import { useHandleError } from '@/composables/useHandleError';
-    import { computed, ref } from 'vue';
+import { useHandleError } from '@/composables/useHandleError';
+import { computed, ref } from 'vue';
 
-    const { currentError, closeError: closeWindow } = useHandleError();
-    
-    const isCurrentError = computed(() => {
-        return (currentError.message.length && currentError.name.length);
-    })
-    
-    const isErrorMessageVisible = ref(false);
+const { currentError, closeError: closeWindow } = useHandleError();
 
-    const switchErrorMessageVisibility = () => {
-        isErrorMessageVisible.value = !isErrorMessageVisible.value;
-    }
+const handleCloseWindow = () => {
 
-    const buttonMessage = computed(() => {
-        return isErrorMessageVisible.value ? 'Свернуть' : 'Показать';
-    })
+    switchErrorMessageVisibility();
+    closeWindow();
+}
+
+const isCurrentError = computed(() => {
+    return (currentError.message.length && currentError.name.length);
+})
+
+const isErrorMessageVisible = ref(false);
+
+const switchErrorMessageVisibility = () => {
+    isErrorMessageVisible.value = !isErrorMessageVisible.value;
+}
+
+const buttonMessage = computed(() => {
+    return isErrorMessageVisible.value ? 'Свернуть' : 'Показать';
+})
 </script>
 
 <style scoped lang="scss">
@@ -52,12 +58,12 @@
     animation: fadeIn 0.4s ease-out;
 
     .error-header {
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
-    color: #ff3ea5;
-    text-shadow: 0 0 6px rgba(255, 150, 220, 0.2);
-    word-break: break-word;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        color: #ff3ea5;
+        text-shadow: 0 0 6px rgba(255, 150, 220, 0.2);
+        word-break: break-word;
     }
 
     .error-message {
@@ -77,9 +83,10 @@
 
     @keyframes fadeIn {
         from {
-        opacity: 0;
-        transform: translateY(-10px);
+            opacity: 0;
+            transform: translateY(-10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);

@@ -1,22 +1,29 @@
 <template>
     <div class="container">
-        <RecursiveTree :component="rootFolder" />
+        <RecursiveTree :component="rootFolder">
+            <template #default="{ component, fileIconColor }">
+                📄 {{ component.name }} {{ fileIconColor ?? "white" }}
+            </template>
+
+            <template #delete="{ component }">
+                <DeleteComponent :component="component" />
+            </template>
+
+            <template #edit="{ component }">
+                <RenameComponent :component="component" />
+            </template>
+        </RecursiveTree>
     </div>
 </template>
 
 <script lang="ts" setup>
-import DirectoryTree from '@/tasks/DirectoryTree.vue';
-import type { FolderType as FolderType, ItemType } from '@/tasks/Folder.vue';
-import type { FileType as FileType } from '@/tasks/File.vue';
-import Folder from '@/tasks/Folder.vue';
-import { File as FileClass, root } from '@/tasks/DirectoryClasses'
-import { computed, reactive } from 'vue';
-import File from '@/tasks/File.vue';
-import RecursiveTree from '@/tasks/RecursiveTree.vue';
+import RecursiveTree from '@/tasks/RecursiveTree.vue'
+import DeleteComponent from '@/tasks/components/DeleteComponent.vue'
+import RenameComponent from '@/tasks/components/RenameComponent.vue'
 
-const files = computed(() => {
-    return rootFolder.items.filter((rootFile: ItemType) => rootFile instanceof FileClass);
-})
+import type { FolderType } from '@/tasks/utils/types';
+import type { FileType } from '@/tasks/utils/types';
+import { reactive } from 'vue'
 
 const rootFolder = reactive<FolderType>({
     name: 'ROOT',
@@ -59,8 +66,8 @@ const file111: FileType = { name: 'file111', parentFolder: folder11 };
 
 folder11.items.push(file111);
 folder1.items.push(folder11);
-folder21.items.push(file22);
 folder2.items.push(folder21);
+folder2.items.push(file22);
 
 rootFolder.items.push(folder1, folder2, file1);
 
@@ -69,7 +76,7 @@ rootFolder.items.push(folder1, folder2, file1);
 <style lang="scss" scoped>
 .container {
     width: 600px;
-    height: 600px;
+    height: fit-content;
     border: solid 2px black;
     position: absolute;
     top: 50%;

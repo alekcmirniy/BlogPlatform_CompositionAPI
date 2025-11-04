@@ -22,3 +22,15 @@
         background-color: #96a1a5;
     }
 }
+
+@mixin operate-button {
+    $button-color: rgb(121, 164, 202);
+    width: 30px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    background-color: $button-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

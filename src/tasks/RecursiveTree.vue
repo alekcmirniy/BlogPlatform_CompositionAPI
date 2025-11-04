@@ -1,28 +1,68 @@
 <template>
     <div class="lonely-container">
-        <div>{{ isFolder ? "📁" : "📄" }} <span class="name"> {{ component.name }} </span></div>
 
-        <button @click="deleteComponent" class="delete-button">✘</button>
-        <button @click="renameComponent" class="edit-button">✎</button>
+        <div v-if="isFolder">
+            📁<span class="name">{{ component.name }}</span>
 
-        <template v-if="isFolder">
-            <RecursiveTree v-for="child in (component as FolderType).items" :key="component.name" :component="child">
+            <DeleteComponent :component="component" />
+            <RenameComponent :component="component" />
+            <AddChildComponent :component="component" />
 
+            <RecursiveTree v-for="child in (component as FolderType).items" :key="child.name" :component="child">
+                <template #default="slotProps">
+                    <slot name="default" v-bind="slotProps"></slot>
+                </template>
+
+                <template #edit="slotProps">
+                    <slot name="edit" v-bind="slotProps"></slot>
+                </template>
+
+                <template #delete="slotProps">
+                    <slot name="delete" v-bind="slotProps"></slot>
+                </template>
             </RecursiveTree>
-        </template>
+        </div>
 
-        <template v-else>
-
-        </template>
+        <div v-else>
+            <slot :component="component" :isFolder="false" :fileIconColor="component.parentFolder?.fileIconColor">
+            </slot>
+            <slot name="edit" :component="component" :isFolder="false"
+                :fileIconColor="component.parentFolder?.fileIconColor">
+            </slot>
+            <slot name="delete" :component="component" :isFolder="false"
+                :fileIconColor="component.parentFolder?.fileIconColor">
+            </slot>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { FolderType, ItemType } from './Folder.vue';
+import DeleteComponent from './components/DeleteComponent.vue'
+import RenameComponent from './components/RenameComponent.vue';
+import AddChildComponent from './components/AddChildComponent.vue';
+import type { FolderType, ItemType } from '@/tasks/utils/types';
 
 const props = defineProps<{
     component: ItemType
+}>();
+
+defineSlots<{
+    default?: (props: {
+        component: ItemType,
+        isFolder: boolean,
+        fileIconColor: string | undefined
+    }) => any,
+    edit?: (props: {
+        component: ItemType,
+        isFolder: boolean,
+        fileIconColor: string | undefined
+    }) => any,
+    delete?: (props: {
+        component: ItemType,
+        isFolder: boolean,
+        fileIconColor: string | undefined
+    }) => any,
 }>();
 
 const component = props.component;
@@ -35,14 +75,6 @@ const isFolderType = (obj: ItemType) => {
     return 'items' in obj;
 }
 
-const deleteComponent = () => {
-    console.log('trying to delete' + component.name);
-}
-
-const renameComponent = () => {
-    component.name = "default";
-}
-
 </script>
 
 <style lang="scss">
@@ -52,21 +84,6 @@ const renameComponent = () => {
 
     .name {
         text-decoration: underline;
-    }
-
-    .edit-button {
-        position: absolute;
-        right: 10%;
-        top: 0;
-        background-color: rgb(121, 164, 202);
-
-    }
-
-    .delete-button {
-        position: absolute;
-        right: 2%;
-        top: 0;
-        background-color: rgb(121, 164, 202);
     }
 }
 </style>
